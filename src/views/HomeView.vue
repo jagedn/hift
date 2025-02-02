@@ -60,10 +60,10 @@ setTimeout(() => {
 
 <template>
   <div class="container row py-4 px-3 mx-auto">
-    <div class="col-4 px-0">
+    <div class="col-lg-4 col-md-12 col-sm-12 px-0">
       <FeelingForm @save="publishFeeling" @updated="updateChart" v-model="feeling"/>
     </div>
-    <div class="col-4 px-0">
+    <div class="col-lg-4 col-md-12 col-sm-12 px-0">
       <FeelingChart v-model="feeling" @chart="saveChartImage"/>
     </div>
   </div>
