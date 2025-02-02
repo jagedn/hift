@@ -28,6 +28,11 @@ const saveChartImage =(image)=> {
   currentImage = image;
 }
 
+const logoff = () => {
+  instance.removeUser();
+  router.push('login');
+}
+
 const publishFeeling = async () => {
   const url = instance.getUser().url;
   const accessToken = instance.getUser().accessToken;
@@ -44,7 +49,6 @@ const publishFeeling = async () => {
     visibility: "public",
     mediaIds:[mediaId]
   });
-  console.log(status);
   alert("Feeling published");
 }
 
@@ -60,8 +64,11 @@ setTimeout(() => {
 
 <template>
   <div class="container row py-4 px-3 mx-auto">
+    <h3 class="col-lg-12 col-md-12 col-sm-12 px-0">
+        {{(instance.getUser()||{}).url}}
+    </h3>
     <div class="col-lg-4 col-md-12 col-sm-12 px-0">
-      <FeelingForm @save="publishFeeling" @updated="updateChart" v-model="feeling"/>
+      <FeelingForm @save="publishFeeling" @updated="updateChart" v-model="feeling" @logoff="logoff"/>
     </div>
     <div class="col-lg-4 col-md-12 col-sm-12 px-0">
       <FeelingChart v-model="feeling" @chart="saveChartImage"/>

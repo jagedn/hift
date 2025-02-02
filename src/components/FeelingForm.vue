@@ -13,6 +13,10 @@ const submitForm = () => {
   emits('save');
 };
 
+const logoff=()=>{
+  emits('logoff');
+};
+
 emits('updated');
 </script>
 
@@ -39,8 +43,9 @@ emits('updated');
         <input type="range" class="form-range" id="economy"  @change="updated" v-model="modelValue.economy.value" min="1" max="5"/>
       </div>
 
-      <div>
-        <button type="submit">Submit</button>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <button class="btn btn-primary  me-md-3" type="submit">Submit</button>
+        <button type="button" class="btn btn-outline-danger" @click="logoff">Logout</button>
       </div>
     </form>
   </div>
