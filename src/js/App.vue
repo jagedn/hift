@@ -10,7 +10,7 @@ import { RouterView } from 'vue-router'
 
     <h1>How I feel today (fediverse version)</h1>
     <div class="col-lg-8 px-0">
-      <p class="fs-4">Share you daily feeling</p>
+      <p class="fs-4">Share your daily feeling</p>
     </div>
 
     <!--button type="button" class="btn btn-primary me-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample">Toggle offcanvas</button-->

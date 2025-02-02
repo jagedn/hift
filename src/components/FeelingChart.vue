@@ -1,12 +1,13 @@
 <script setup>
-import { ref, defineEmits, defineModel, watch } from 'vue';
+import { ref, defineEmits, defineModel, defineExpose, watch } from 'vue';
 import { PolarAreaChart } from 'vue-chart-3';
 import { Chart, registerables } from 'chart.js';
 
 const modelValue = defineModel('modelValue');
-const emits = defineEmits(["chart"]);
 
 const data = ref([3,3,3,3]);
+
+const chartController = ref(null);
 
 watch(modelValue, (value) => {
   data.value = [
@@ -17,8 +18,9 @@ watch(modelValue, (value) => {
   ];
 }, {deep: true});
 
-function handleChartUpdated(chart) {
-  emits('chart', chart.toBase64Image());
+const getChartImage = () => {
+  console.log(chartController.value)
+  return chartController.value.chartInstance.toBase64Image();
 }
 
 const plugin = {
@@ -67,11 +69,15 @@ const chartDefinition = ref({
   plugins: [plugin],
 });
 
+defineExpose({
+  getChartImage
+});
 
+defineEmits(["chart"]);
 </script>
 
 <template>
-  <PolarAreaChart :chartData="chartDefinition" @chart:update="handleChartUpdated"/>
+  <PolarAreaChart :chartData="chartDefinition" ref="chartController"/>
 </template>
 
 <style scoped>

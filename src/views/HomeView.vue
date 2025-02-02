@@ -19,14 +19,8 @@ const feeling = {
   integration: ref(0),
 };
 
-const updateChart = () => {
-  console.log();
-}
 
-let currentImage = null;
-const saveChartImage =(image)=> {
-  currentImage = image;
-}
+const chartChild = ref(null);
 
 const logoff = () => {
   instance.removeUser();
@@ -36,6 +30,8 @@ const logoff = () => {
 const publishFeeling = async () => {
   const url = instance.getUser().url;
   const accessToken = instance.getUser().accessToken;
+  const currentImage = chartChild.value.getChartImage();
+
   const masto = createRestAPIClient({
     url: url,
     accessToken: accessToken,
@@ -44,7 +40,8 @@ const publishFeeling = async () => {
     file: currentImage,
   })
   const mediaId = response.id;
-  const status = await masto.v1.statuses.create({
+
+  await masto.v1.statuses.create({
     status: `#HIFT`,
     visibility: "public",
     mediaIds:[mediaId]
@@ -68,10 +65,10 @@ setTimeout(() => {
         {{(instance.getUser()||{}).url}}
     </h3>
     <div class="col-lg-4 col-md-12 col-sm-12 px-0">
-      <FeelingForm @save="publishFeeling" @updated="updateChart" v-model="feeling" @logoff="logoff"/>
+      <FeelingForm @save="publishFeeling" v-model="feeling" @logoff="logoff"/>
     </div>
     <div class="col-lg-4 col-md-12 col-sm-12 px-0">
-      <FeelingChart v-model="feeling" @chart="saveChartImage"/>
+      <FeelingChart v-model="feeling" ref="chartChild"/>
     </div>
   </div>
 </template>
