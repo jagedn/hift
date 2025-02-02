@@ -7,7 +7,7 @@ import FeelingChart from '../components/FeelingChart.vue'
 import {ref} from "vue";
 
 const instance = instanceStore();
-if (!instance.getUser().accessToken) {
+if (!(instance.getUser() || {} ).accessToken) {
   router.push('login')
 }
 
