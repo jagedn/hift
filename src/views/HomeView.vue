@@ -38,6 +38,16 @@ const publishFeeling = async () => {
   });
   const response = await masto.v1.media.create({
     file: currentImage,
+    description:`A radar chart shows four categories:
+        physic (light red),
+        emotion (light teal),
+        economy (light gray),
+        and social (gold).
+    The physic category has a value of ${feeling.physic.value}
+    The emotion category has a value of ${feeling.emotion.value}
+    The economy category has a value of ${feeling.economy.value}
+    The social category has a value of ${feeling.social.value}
+    `
   })
   const mediaId = response.id;
 

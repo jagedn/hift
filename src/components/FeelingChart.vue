@@ -1,6 +1,6 @@
 <script setup>
 import { ref, defineEmits, defineModel, defineExpose, watch } from 'vue';
-import { PolarAreaChart } from 'vue-chart-3';
+import { PolarAreaChart, RadarChart } from 'vue-chart-3';
 import { Chart, registerables } from 'chart.js';
 
 const modelValue = defineModel('modelValue');
@@ -19,7 +19,6 @@ watch(modelValue, (value) => {
 }, {deep: true});
 
 const getChartImage = () => {
-  console.log(chartController.value)
   return chartController.value.chartInstance.toBase64Image();
 }
 
@@ -29,12 +28,13 @@ const plugin = {
     const {ctx} = chart;
     ctx.save();
     ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = options.color || '#AECEF3FF';
+    ctx.fillStyle = options.color || 'lightGreen';
     ctx.fillRect(0, 0, chart.width, chart.height);
     ctx.restore();
   }
 };
-Chart.register(plugin,...registerables);
+
+Chart.register(...registerables,plugin);
 
 const chartDefinition = ref({
   labels: [
@@ -52,21 +52,37 @@ const chartDefinition = ref({
         'rgb(255, 99, 132)',
         'rgb(75, 192, 192)',
         'rgb(255, 205, 86)',
-        'rgb(201, 203, 207)',
+        'rgb(30,98,234)',
       ],
     },
+    {
+      data: [5,5,5,5],
+      fill: false
+    },
   ],
-  options: {
-    plugins: {
-      legend: {
-        position: 'bottom'
+});
+
+const chartOptions = ref({
+  responsive: true,
+  scales: {
+    r: {
+      ticks: {
+        color: 'rgb(236,243,241)',
       },
-      customCanvasBackgroundColor: {
-        color: 'lightGreen',
-      }
     }
   },
-  plugins: [plugin],
+  plugins: {
+    title: {
+      display: true,
+      text: "How I feel today"
+    },
+    legend: {
+      position: 'left',
+    },
+    customCanvasBackgroundColor: {
+      color: 'rgb(236,243,241)',
+    }
+  }
 });
 
 defineExpose({
@@ -77,7 +93,7 @@ defineEmits(["chart"]);
 </script>
 
 <template>
-  <PolarAreaChart :chartData="chartDefinition" ref="chartController"/>
+  <polar-area-chart :chartData="chartDefinition" :options="chartOptions" ref="chartController"/>
 </template>
 
 <style scoped>
