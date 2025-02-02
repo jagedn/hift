@@ -1,6 +1,5 @@
 <script setup>
 import Header from '../components/AppHeader.vue'
-import Guides from '../components/AppGuides.vue'
 import Footer from '../components/AppFooter.vue'
 import { RouterView } from 'vue-router'
 </script>
