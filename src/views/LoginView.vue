@@ -60,7 +60,7 @@ const doLogin = async (instance) => {
 }
 
 
-if(window.location.href.indexOf("?code=")!==-1){
+if(window.location.href.indexOf("code=")!==-1){
   const user = store.getUser() || {};
   const code = getQueryVariable("code");
   const url = user.url + "/oauth/token";
