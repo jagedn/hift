@@ -1,0 +1,18 @@
+Options All -Indexes
+
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+<IfModule mod_rewrite.c>
+  # Redirect to the public folder
+  RewriteEngine On
+  # RewriteBase /
+  RewriteRule login index.html [L]
+
+  # Redirect to HTTPS
+  # RewriteEngine On
+  # RewriteCond %{HTTPS} off
+  # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
