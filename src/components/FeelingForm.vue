@@ -2,7 +2,7 @@
 import {  defineEmits, defineModel } from 'vue';
 
 defineModel('modelValue')
-
+const props = defineProps(["topics"]);
 const emits = defineEmits(['save', "updated"]);
 
 const updated = () => {
@@ -24,23 +24,23 @@ emits('updated');
   <div class="form-card">
     <form @submit.prevent="submitForm">
       <div>
-        <label for="physic" class="form-label">Physic</label>
-        <input type="range" class="form-range" id="v"  @change="updated" v-model="modelValue.physic.value" min="1" max="5"/>
+        <label for="a" class="form-label">{{props.topics.a}}</label>
+        <input type="range" class="form-range" id="a"  @change="updated" v-model="modelValue.a.value" min="1" max="5"/>
       </div>
 
       <div>
-        <label for="emotion" class="form-label">Emotion</label>
-        <input type="range" class="form-range" id="emotion"  @change="updated" v-model="modelValue.emotion.value" min="1" max="5"/>
+        <label for="b" class="form-label">{{props.topics.b}}</label>
+        <input type="range" class="form-range" id="b"  @change="updated" v-model="modelValue.b.value" min="1" max="5"/>
       </div>
 
       <div>
-        <label for="social" class="form-label">Social</label>
-        <input type="range" class="form-range" id="social"  @change="updated" v-model="modelValue.social.value" min="1" max="5"/>
+        <label for="c" class="form-label">{{props.topics.c}}</label>
+        <input type="range" class="form-range" id="c"  @change="updated" v-model="modelValue.c.value" min="1" max="5"/>
       </div>
 
       <div>
-        <label for="economy" class="form-label">Economy</label>
-        <input type="range" class="form-range" id="economy"  @change="updated" v-model="modelValue.economy.value" min="1" max="5"/>
+        <label for="d" class="form-label">{{props.topics.d}}</label>
+        <input type="range" class="form-range" id="d"  @change="updated" v-model="modelValue.d.value" min="1" max="5"/>
       </div>
 
       <div class="d-grid gap-2 d-md-flex justify-content-md-center">

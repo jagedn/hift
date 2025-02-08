@@ -2,6 +2,7 @@
 import {createRestAPIClient} from "masto";
 import router from '@/router';
 import {instanceStore} from '@/stores/instance';
+import {feelingStore} from '@/stores/feeling';
 import FeelingForm from '../components/FeelingForm.vue'
 import FeelingChart from '../components/FeelingChart.vue'
 import {ref} from "vue";
@@ -11,12 +12,18 @@ if (!(instance.getUser() || {} ).accessToken) {
   router.push('login')
 }
 
+const topics = {
+  a: "Physical",
+  b: "Emotional",
+  c: "Economy",
+  d: "Social",
+};
+
 const feeling = {
-  physic: ref(0),
-  emotion: ref(0),
-  social: ref(0),
-  economy: ref(0),
-  integration: ref(0),
+  a: ref(0),
+  b: ref(0),
+  c: ref(0),
+  d: ref(0),
 };
 
 
@@ -39,14 +46,14 @@ const publishFeeling = async () => {
   const response = await masto.v1.media.create({
     file: currentImage,
     description:`A radar chart shows four categories:
-        physic (light red),
-        emotion (light teal),
-        economy (light gray),
-        and social (gold).
-    The physic category has a value of ${feeling.physic.value}
-    The emotion category has a value of ${feeling.emotion.value}
-    The economy category has a value of ${feeling.economy.value}
-    The social category has a value of ${feeling.social.value}
+        ${topics.a} (light red),
+        ${topics.b} (light teal),
+        ${topics.c} (light gray),
+        and ${topics.d} (gold).
+    The ${topics.a} category has a value of ${feeling.a.value}
+    The ${topics.b} category has a value of ${feeling.b.value}
+    The ${topics.c} category has a value of ${feeling.c.value}
+    The ${topics.d} category has a value of ${feeling.d.value}
     `
   })
   const mediaId = response.id;
@@ -56,16 +63,24 @@ const publishFeeling = async () => {
     visibility: "public",
     mediaIds:[mediaId]
   });
+
+  feelingStore().updateFeeling({
+    a: feeling.a.value,
+    b: feeling.b.value,
+    c: feeling.c.value,
+    d: feeling.d.value,
+  });
+
   alert("Feeling published");
 }
 
 setTimeout(() => {
-  feeling.physic.value = 3;
-  feeling.emotion.value = 3;
-  feeling.social.value = 3;
-  feeling.economy.value = 3;
-  feeling.integration.value = 3;
-}, 1000);
+  const current = feelingStore().getFeeling();
+  feeling.a.value = current.a;
+  feeling.b.value = current.b;
+  feeling.c.value = current.c;
+  feeling.d.value = current.d;
+}, 100);
 
 </script>
 
@@ -75,10 +90,10 @@ setTimeout(() => {
         {{(instance.getUser()||{}).url}}
     </h3>
     <div class="col-lg-4 col-md-12 col-sm-12 px-0">
-      <FeelingForm @save="publishFeeling" v-model="feeling" @logoff="logoff"/>
+      <FeelingForm @save="publishFeeling" v-model="feeling" @logoff="logoff" :topics="topics"/>
     </div>
     <div class="col-lg-4 col-md-12 col-sm-12 px-0">
-      <FeelingChart v-model="feeling" ref="chartChild"/>
+      <FeelingChart v-model="feeling" ref="chartChild" :topics="topics"/>
     </div>
   </div>
 </template>

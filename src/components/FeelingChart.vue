@@ -1,9 +1,10 @@
 <script setup>
-import { ref, defineEmits, defineModel, defineExpose, watch } from 'vue';
+import { ref, defineModel, defineExpose, watch } from 'vue';
 import { PolarAreaChart, RadarChart } from 'vue-chart-3';
 import { Chart, registerables } from 'chart.js';
 
 const modelValue = defineModel('modelValue');
+const props = defineProps(["topics"]);
 
 const data = ref([3,3,3,3]);
 
@@ -11,10 +12,10 @@ const chartController = ref(null);
 
 watch(modelValue, (value) => {
   data.value = [
-    value.physic.value,
-    value.emotion.value,
-    value.social.value,
-    value.economy.value,
+    value.a.value,
+    value.b.value,
+    value.c.value,
+    value.d.value,
   ];
 }, {deep: true});
 
@@ -38,10 +39,10 @@ Chart.register(...registerables,plugin);
 
 const chartDefinition = ref({
   labels: [
-    'physic',
-    'emotion',
-    'social',
-    'economy',
+    props.topics.a,
+    props.topics.b,
+    props.topics.c,
+    props.topics.d,
   ],
   datasets: [
     {
@@ -89,7 +90,6 @@ defineExpose({
   getChartImage
 });
 
-defineEmits(["chart"]);
 </script>
 
 <template>
