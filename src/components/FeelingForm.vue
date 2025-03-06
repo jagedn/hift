@@ -24,23 +24,23 @@ emits('updated');
   <div class="form-card">
     <form @submit.prevent="submitForm">
       <div>
-        <label for="a" class="form-label">{{props.topics.a}}</label>
-        <input type="range" class="form-range" id="a"  @change="updated" v-model="modelValue.a.value" min="1" max="5"/>
+        <label for="a" class="form-label">{{props.topics.a}} ({{modelValue.a}}%)</label>
+        <input type="range" class="form-range" id="a"  @change="updated" v-model="modelValue.a.value" min="1" :max="modelValue.max"/>
       </div>
 
       <div>
-        <label for="b" class="form-label">{{props.topics.b}}</label>
-        <input type="range" class="form-range" id="b"  @change="updated" v-model="modelValue.b.value" min="1" max="5"/>
+        <label for="b" class="form-label">{{props.topics.b}} ({{modelValue.b}}%)</label>
+        <input type="range" class="form-range" id="b"  @change="updated" v-model="modelValue.b.value" min="1" :max="modelValue.max"/>
       </div>
 
       <div>
-        <label for="c" class="form-label">{{props.topics.c}}</label>
-        <input type="range" class="form-range" id="c"  @change="updated" v-model="modelValue.c.value" min="1" max="5"/>
+        <label for="c" class="form-label">{{props.topics.c}} ({{modelValue.c}}%)</label>
+        <input type="range" class="form-range" id="c"  @change="updated" v-model="modelValue.c.value" min="1" :max="modelValue.max"/>
       </div>
 
       <div>
-        <label for="d" class="form-label">{{props.topics.d}}</label>
-        <input type="range" class="form-range" id="d"  @change="updated" v-model="modelValue.d.value" min="1" max="5"/>
+        <label for="d" class="form-label">{{props.topics.d}} ({{modelValue.d}}%)</label>
+        <input type="range" class="form-range" id="d"  @change="updated" v-model="modelValue.d.value" min="1" :max="modelValue.max"/>
       </div>
 
       <div class="d-grid gap-2 d-md-flex justify-content-md-center">

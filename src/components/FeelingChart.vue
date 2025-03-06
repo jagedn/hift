@@ -7,6 +7,7 @@ const modelValue = defineModel('modelValue');
 const props = defineProps(["topics"]);
 
 const data = ref([3,3,3,3]);
+const max = ref([50,50,50,50]);
 
 const chartController = ref(null);
 
@@ -17,6 +18,7 @@ watch(modelValue, (value) => {
     value.c.value,
     value.d.value,
   ];
+  max.value = [value.max, value.max, value.max, value.max];
 }, {deep: true});
 
 const getChartImage = () => {
@@ -57,7 +59,7 @@ const chartDefinition = ref({
       ],
     },
     {
-      data: [5,5,5,5],
+      data: max,
       fill: false
     },
   ],

@@ -24,6 +24,7 @@ const feeling = {
   b: ref(0),
   c: ref(0),
   d: ref(0),
+  max: 100,
 };
 
 
