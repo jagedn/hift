@@ -44,6 +44,11 @@ emits('updated');
       </div>
 
       <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <label for="msg" class="form-label">Toot</label>
+        <input type="text" class="form-text" id="msg"  v-model="modelValue.msg.value" min="0" max="50"/>
+      </div>
+
+      <div class="d-grid gap-2 d-md-flex justify-content-md-center">
         <button class="btn btn-primary  me-md-3" type="submit">Submit</button>
         <button type="button" class="btn btn-outline-danger" @click="logoff">Logout</button>
       </div>

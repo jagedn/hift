@@ -1,5 +1,4 @@
 <script setup>
-import {createRestAPIClient} from "masto";
 import router from '@/router';
 import {instanceStore} from '@/stores/instance';
 import {feelingStore} from '@/stores/feeling';
@@ -8,9 +7,13 @@ import FeelingChart from '../components/FeelingChart.vue'
 import {ref} from "vue";
 
 const instance = instanceStore();
-if (!(instance.getUser() || {} ).accessToken) {
-  router.push('login')
-}
+
+
+instance.validUser().then( (valid)=>{
+  if( !valid ){
+    router.push('login')
+  }
+});
 
 const topics = {
   a: "Physical",
@@ -24,6 +27,7 @@ const feeling = {
   b: ref(0),
   c: ref(0),
   d: ref(0),
+  msg:ref(''),
   max: 100,
 };
 
@@ -36,17 +40,12 @@ const logoff = () => {
 }
 
 const publishFeeling = async () => {
-  const url = instance.getUser().url;
-  const accessToken = instance.getUser().accessToken;
-  const currentImage = chartChild.value.getChartImage();
-
-  const masto = createRestAPIClient({
-    url: url,
-    accessToken: accessToken,
-  });
-  const response = await masto.v1.media.create({
-    file: currentImage,
-    description:`A radar chart shows four categories:
+  try {
+    const currentImage = chartChild.value.getChartImage();
+    const masto = instance.createAPI();
+    const response = await masto.v1.media.create({
+      file: currentImage,
+      description: `A radar chart shows four categories:
         ${topics.a} (light red),
         ${topics.b} (light teal),
         ${topics.c} (light gray),
@@ -56,23 +55,27 @@ const publishFeeling = async () => {
     The ${topics.c} category has a value of ${feeling.c.value}
     The ${topics.d} category has a value of ${feeling.d.value}
     `
-  })
-  const mediaId = response.id;
+    })
+    const mediaId = response.id;
 
-  await masto.v1.statuses.create({
-    status: `#HIFT`,
-    visibility: "public",
-    mediaIds:[mediaId]
-  });
+    await masto.v1.statuses.create({
+      status: `${feeling.msg.value}\n#HIFT`,
+      visibility: "public",
+      mediaIds: [mediaId]
+    });
 
-  feelingStore().updateFeeling({
-    a: feeling.a.value,
-    b: feeling.b.value,
-    c: feeling.c.value,
-    d: feeling.d.value,
-  });
+    feelingStore().updateFeeling({
+      a: feeling.a.value,
+      b: feeling.b.value,
+      c: feeling.c.value,
+      d: feeling.d.value,
+    });
 
-  alert("Feeling published");
+    alert("Feeling published");
+  }catch(e){
+    console.log(e);
+    router.push('login')
+  }
 }
 
 setTimeout(() => {

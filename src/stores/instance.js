@@ -1,6 +1,7 @@
 
 import { defineStore } from 'pinia'
 import {ref} from 'vue';
+import {createRestAPIClient} from "masto";
 
 const SETTINGS_LOCAL_STORAGE_INSTANCE = 'HIFT_INSTANCE'
 
@@ -25,5 +26,28 @@ export const instanceStore = defineStore('instance', () => {
         currentUser.value = null;
     }
 
-    return { currentUser, getUser, updateUser, removeUser }
+    const createAPI = ()=>{
+        const accessToken = getUser().accessToken;
+        const url = getUser().url;
+        const masto = createRestAPIClient({
+            url: url,
+            accessToken: accessToken,
+        });
+        return masto;
+    }
+
+    const validUser = async ()=>{
+        if (!(getUser() || {} ).accessToken) {
+            return false;
+        }
+        try {
+            const creds = await createAPI().v1.accounts.verifyCredentials();
+            console.log(creds);
+            return true;
+        }catch (e){
+            return false;
+        }
+    }
+
+    return { currentUser, getUser, updateUser, removeUser, createAPI, validUser }
 })
